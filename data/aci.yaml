@@ -1,0 +1,346 @@
+---
+fabric:
+  vlan_pools:
+    MATLAB_Pool:
+      description: MATLAB VLAN Pool
+      allocation_mode: static
+      range:
+        description: MATLAB VLANs
+        start: 1401
+        end: 1421
+        allocation_mode: inherit
+
+  physical_domains:
+    MATLAB_PHY_DOM:
+      vlan_pool: MATLAB_Pool
+
+  aaeps:
+    MATLAB_AEP:
+      description: MATLAB AEP
+      physical_domains:
+        - MATLAB_PHY_DOM
+
+  interface_policies:
+    cdp:
+      CDP_Enabled_IP:
+        admin_state: enabled
+    lldp:
+      LLDP_Enabled_IP:
+        receive_state: enabled
+        transmit_state: enabled
+    link_level:
+      10G_IP:
+        description: 10G Link
+        auto_negotiation: "off"
+        speed: 10G
+      1G_IP:
+        description: 1G Link
+        auto_negotiation: "off"
+        speed: 1G
+    mcp:
+      MCP_Enabled_IP:
+        description: MCP Enabled
+        admin_state: enabled
+    lacp:
+      LACP_Active_IP:
+        mode: active
+        min_links: 1
+        max_links: 16
+      LACP_Passive_IP:
+        mode: passive
+        min_links: 1
+        max_links: 16
+
+  policy_groups:
+    10G_CDP_LLDP_MCP_IGP:
+      type: access
+      description: 10G CDP LLDP MCP access ports
+      aaep: MATLAB_AEP
+      cdp_policy: CDP_Enabled_IP
+      lldp_policy: LLDP_Enabled_IP
+      link_level_policy: 10G_IP
+      mcp_policy: MCP_Enabled_IP
+    1G_CDP_LLDP_MCP_IGP:
+      type: access
+      description: 1G CDP LLDP MCP access ports
+      aaep: MATLAB_AEP
+      cdp_policy: CDP_Enabled_IP
+      lldp_policy: LLDP_Enabled_IP
+      link_level_policy: 1G_IP
+      mcp_policy: MCP_Enabled_IP
+    10G_CDP_LLDP_MCP_LACP_VPC1:
+      type: vpc
+      description: MATLAB vPC bundle 1
+      aaep: MATLAB_AEP
+      cdp_policy: CDP_Enabled_IP
+      lldp_policy: LLDP_Enabled_IP
+      link_level_policy: 10G_IP
+      mcp_policy: MCP_Enabled_IP
+      lacp_policy: LACP_Active_IP
+    10G_CDP_LLDP_MCP_LACP_VPC2:
+      type: vpc
+      description: MATLAB vPC bundle 2
+      aaep: MATLAB_AEP
+      cdp_policy: CDP_Enabled_IP
+      lldp_policy: LLDP_Enabled_IP
+      link_level_policy: 10G_IP
+      mcp_policy: MCP_Enabled_IP
+      lacp_policy: LACP_Active_IP
+    10G_CDP_LLDP_MCP_LACP_VPC3:
+      type: vpc
+      description: MATLAB vPC bundle 3
+      aaep: MATLAB_AEP
+      cdp_policy: CDP_Enabled_IP
+      lldp_policy: LLDP_Enabled_IP
+      link_level_policy: 10G_IP
+      mcp_policy: MCP_Enabled_IP
+      lacp_policy: LACP_Active_IP
+    10G_CDP_LLDP_MCP_LACP_VPC4:
+      type: vpc
+      description: MATLAB vPC bundle 4
+      aaep: MATLAB_AEP
+      cdp_policy: CDP_Enabled_IP
+      lldp_policy: LLDP_Enabled_IP
+      link_level_policy: 10G_IP
+      mcp_policy: MCP_Enabled_IP
+      lacp_policy: LACP_Active_IP
+
+  vpc_protection_groups:
+    MATLAB_VPC_101_102:
+      id: 101
+      switch1: 101
+      switch2: 102
+
+  interface_profiles:
+    101_MATLAB_LIP:
+      description: Leaf 101 MATLAB Ports
+      selectors:
+        - { name: Eth1_31, description: MATLAB trunk, policy_group: 10G_CDP_LLDP_MCP_IGP, policy_group_type: access, block_name: Eth1_31, card: 1, port: 31 }
+        - { name: Eth1_32, description: MATLAB trunk, policy_group: 10G_CDP_LLDP_MCP_IGP, policy_group_type: access, block_name: Eth1_32, card: 1, port: 32 }
+        - { name: Eth1_33, description: MATLAB trunk, policy_group: 10G_CDP_LLDP_MCP_IGP, policy_group_type: access, block_name: Eth1_33, card: 1, port: 33 }
+        - { name: Eth1_34, description: MATLAB trunk, policy_group: 10G_CDP_LLDP_MCP_IGP, policy_group_type: access, block_name: Eth1_34, card: 1, port: 34 }
+        - { name: Eth1_35, description: MATLAB trunk, policy_group: 10G_CDP_LLDP_MCP_IGP, policy_group_type: access, block_name: Eth1_35, card: 1, port: 35 }
+        - { name: Eth1_36, description: MATLAB trunk, policy_group: 10G_CDP_LLDP_MCP_IGP, policy_group_type: access, block_name: Eth1_36, card: 1, port: 36 }
+    102_MATLAB_LIP:
+      description: Leaf 102 MATLAB Ports
+      selectors:
+        - { name: Eth1_31, description: MATLAB trunk, policy_group: 10G_CDP_LLDP_MCP_IGP, policy_group_type: access, block_name: Eth1_31, card: 1, port: 31 }
+        - { name: Eth1_32, description: MATLAB trunk, policy_group: 10G_CDP_LLDP_MCP_IGP, policy_group_type: access, block_name: Eth1_32, card: 1, port: 32 }
+        - { name: Eth1_33, description: MATLAB trunk, policy_group: 10G_CDP_LLDP_MCP_IGP, policy_group_type: access, block_name: Eth1_33, card: 1, port: 33 }
+        - { name: Eth1_34, description: MATLAB trunk, policy_group: 10G_CDP_LLDP_MCP_IGP, policy_group_type: access, block_name: Eth1_34, card: 1, port: 34 }
+        - { name: Eth1_35, description: MATLAB trunk, policy_group: 10G_CDP_LLDP_MCP_IGP, policy_group_type: access, block_name: Eth1_35, card: 1, port: 35 }
+        - { name: Eth1_36, description: MATLAB trunk, policy_group: 10G_CDP_LLDP_MCP_IGP, policy_group_type: access, block_name: Eth1_36, card: 1, port: 36 }
+    101_102_MATLAB_LIP:
+      description: Leaf 101 and 102 MATLAB vPC ports
+      selectors:
+        - { name: Eth1_37, description: MATLAB vPC 1, policy_group: 10G_CDP_LLDP_MCP_LACP_VPC1, policy_group_type: vpc, block_name: Eth1_37, card: 1, port: 37 }
+        - { name: Eth1_38, description: MATLAB vPC 2, policy_group: 10G_CDP_LLDP_MCP_LACP_VPC2, policy_group_type: vpc, block_name: Eth1_38, card: 1, port: 38 }
+        - { name: Eth1_39, description: MATLAB vPC 3, policy_group: 10G_CDP_LLDP_MCP_LACP_VPC3, policy_group_type: vpc, block_name: Eth1_39, card: 1, port: 39 }
+        - { name: Eth1_40, description: MATLAB vPC 4, policy_group: 10G_CDP_LLDP_MCP_LACP_VPC4, policy_group_type: vpc, block_name: Eth1_40, card: 1, port: 40 }
+
+  leaf_profiles:
+    101_MATLAB_LSP:
+      description: Leaf 101 MATLAB switch profile
+      node_from: 101
+      node_to: 101
+      interface_profiles: [101_MATLAB_LIP]
+    102_MATLAB_LSP:
+      description: Leaf 102 MATLAB switch profile
+      node_from: 102
+      node_to: 102
+      interface_profiles: [102_MATLAB_LIP]
+    101_102_MATLAB_LSP:
+      description: Leaf 101 and 102 MATLAB vPC switch profile
+      node_from: 101
+      node_to: 102
+      interface_profiles: [101_102_MATLAB_LIP]
+
+tenants:
+  MATLAB_TN:
+    description: MATLAB Tenant
+    owner_tag: MATLAB
+    vrfs:
+      MATLAB_VRF:
+        description: MATLAB VRF
+        policy_control_enforcement_mode: enforced
+        policy_control_enforcement_direction: ingress
+    bridge_domains:
+      MATLAB1-1_BD:
+        description: MATLAB web, application, and database bridge domain
+        type: regular
+        vrf: MATLAB_VRF
+        arp_flooding: "no"
+        clear_remote_mac_entries: "no"
+        unicast_routing: "yes"
+        multicast_routing: "no"
+        ip_learning: "yes"
+        l2_unknown_unicast: proxy
+        l3_unknown_multicast: flood
+        multi_destination_flooding: bd-flood
+        subnets:
+          - { name: web_servers, description: Web Servers, ip: 172.17.17.1/24 }
+          - { name: app_servers, description: Application Servers, ip: 172.17.18.1/24 }
+          - { name: db_servers, description: Database Servers, ip: 172.17.19.1/24 }
+      MATLAB1-2_BD:
+        description: MATLAB cart and checkout bridge domain
+        type: regular
+        vrf: MATLAB_VRF
+        arp_flooding: "no"
+        clear_remote_mac_entries: "no"
+        unicast_routing: "yes"
+        multicast_routing: "no"
+        ip_learning: "yes"
+        l2_unknown_unicast: proxy
+        l3_unknown_multicast: flood
+        multi_destination_flooding: bd-flood
+        subnets:
+          - { name: cart_servers, description: Cart Servers, ip: 172.20.11.1/24 }
+          - { name: checkout_servers, description: Checkout Servers, ip: 172.21.13.1/24 }
+      MATLAB1-3_BD:
+        description: MATLAB VDI bridge domain
+        type: regular
+        vrf: MATLAB_VRF
+        arp_flooding: "no"
+        clear_remote_mac_entries: "no"
+        unicast_routing: "yes"
+        multicast_routing: "no"
+        ip_learning: "yes"
+        l2_unknown_unicast: proxy
+        l3_unknown_multicast: flood
+        multi_destination_flooding: bd-flood
+        subnets:
+          - { name: vdi_servers, description: VDI Servers, ip: 192.168.20.1/24 }
+    application_profiles:
+      App-1_AP:
+        description: eCommerce AP
+        epgs:
+          Web_EPG:
+            description: Web Servers
+            bridge_domain: MATLAB1-1_BD
+            physical_domain: MATLAB_PHY_DOM
+            intra_epg_isolation: unenforced
+            preferred_group_member: exclude
+            static_bindings: { pod: 1, leafs: [101, 102], port_start: 31, port_end: 36, vlan: 1401, mode: regular, deploy_immediacy: lazy }
+          App_EPG:
+            description: Application Servers
+            bridge_domain: MATLAB1-1_BD
+            physical_domain: MATLAB_PHY_DOM
+            intra_epg_isolation: unenforced
+            preferred_group_member: exclude
+            static_bindings: { pod: 1, leafs: [101, 102], port_start: 31, port_end: 36, vlan: 1402, mode: regular, deploy_immediacy: lazy }
+          DB_EPG:
+            description: Database Servers
+            bridge_domain: MATLAB1-1_BD
+            physical_domain: MATLAB_PHY_DOM
+            intra_epg_isolation: unenforced
+            preferred_group_member: exclude
+            static_bindings: { pod: 1, leafs: [101, 102], port_start: 31, port_end: 36, vlan: 1403, mode: regular, deploy_immediacy: lazy }
+          CART_EPG:
+            description: Cart Servers
+            bridge_domain: MATLAB1-2_BD
+            physical_domain: MATLAB_PHY_DOM
+            intra_epg_isolation: unenforced
+            preferred_group_member: exclude
+            static_bindings: { pod: 1, leafs: [101, 102], port_start: 31, port_end: 36, vlan: 1404, mode: regular, deploy_immediacy: lazy }
+          CHECKOUT_EPG:
+            description: Checkout Servers
+            bridge_domain: MATLAB1-2_BD
+            physical_domain: MATLAB_PHY_DOM
+            intra_epg_isolation: unenforced
+            preferred_group_member: exclude
+            static_bindings: { pod: 1, leafs: [101, 102], port_start: 31, port_end: 36, vlan: 1405, mode: regular, deploy_immediacy: lazy }
+      App-2_AP:
+        description: Engineering AP
+        epgs: {}
+      App-3_AP:
+        description: Marketing AP
+        epgs: {}
+    filters:
+      allow-web-ssl:
+        entries:
+          - { name: web-ssl, ether_type: ip, protocol: tcp, destination_port_start: 443, destination_port_end: 443 }
+      allow-web:
+        entries:
+          - { name: web, ether_type: ip, protocol: tcp, destination_port_start: 80, destination_port_end: 80 }
+      allow-ohs-app-http:
+        entries:
+          - { name: http-4443, ether_type: ip, protocol: tcp, destination_port_start: 4443, destination_port_end: 4443 }
+      allow-ohs-app-https:
+        entries:
+          - { name: https-7777, ether_type: ip, protocol: tcp, destination_port_start: 7777, destination_port_end: 7777 }
+          - { name: https-8888, ether_type: ip, protocol: tcp, destination_port_start: 8888, destination_port_end: 8888 }
+      allow-oracle-dir:
+        entries:
+          - { name: oracle-ds, ether_type: ip, protocol: tcp, destination_port_start: 6501, destination_port_end: 6501 }
+      allow-notifications:
+        entries:
+          - { name: notifications, ether_type: ip, protocol: tcp, destination_port_start: 6003, destination_port_end: 6003 }
+      allow-mq-xml-msg:
+        entries:
+          - { name: mq-xml, ether_type: ip, protocol: tcp, destination_port_start: 80, destination_port_end: 80 }
+      allow-identity-mgt:
+        entries:
+          - { name: identity, ether_type: ip, protocol: tcp, destination_port_start: 7499, destination_port_end: 7499 }
+      allow-db:
+        entries:
+          - { name: sql, ether_type: ip, protocol: tcp, destination_port_start: 1433, destination_port_end: 1434 }
+          - { name: oracle-db, ether_type: ip, protocol: tcp, destination_port_start: 1421, destination_port_end: 1421 }
+          - { name: mysql, ether_type: ip, protocol: tcp, destination_port_start: 3306, destination_port_end: 3306 }
+          - { name: postgresql, ether_type: ip, protocol: tcp, destination_port_start: 5432, destination_port_end: 5432 }
+    contracts:
+      web-contract-c01:
+        scope: context
+        subjects:
+          web-subject-s01:
+            reverse_filter_ports: "yes"
+            filters: [allow-web-ssl, allow-web]
+        epg_bindings:
+          - { application_profile: App-1_AP, epg: Web_EPG, type: provider }
+      app-contract-c02:
+        scope: context
+        subjects:
+          app-subject-s02:
+            reverse_filter_ports: "yes"
+            filters: [allow-ohs-app-http, allow-ohs-app-https, allow-oracle-dir, allow-mq-xml-msg, allow-notifications, allow-identity-mgt]
+        epg_bindings:
+          - { application_profile: App-1_AP, epg: App_EPG, type: provider }
+      db-contract-c03:
+        scope: context
+        subjects:
+          db-subject-s03:
+            reverse_filter_ports: "yes"
+            filters: [allow-db]
+        epg_bindings:
+          - { application_profile: App-1_AP, epg: DB_EPG, type: provider }
+      cart-contract-c04:
+        scope: context
+        subjects:
+          cart-subject-s03:
+            reverse_filter_ports: "yes"
+            filters: [allow-db]
+        epg_bindings:
+          - { application_profile: App-1_AP, epg: CART_EPG, type: provider }
+      checkout-contract-c05:
+        scope: context
+        subjects:
+          checkout-subject-s03:
+            reverse_filter_ports: "yes"
+            filters: [allow-db]
+        epg_bindings:
+          - { application_profile: App-1_AP, epg: CHECKOUT_EPG, type: provider }
+
+  MATLAB2_TN:
+    description: MATLAB Tenant 2
+    owner_tag: MATLAB
+    vrfs:
+      MATLAB2_VRF:
+        description: MATLAB2 VRF
+        policy_control_enforcement_mode: enforced
+        policy_control_enforcement_direction: ingress
+    bridge_domains: {}
+    application_profiles:
+      App-4_AP:
+        description: Finance AP
+        epgs: {}
+    filters: {}
+    contracts: {}
