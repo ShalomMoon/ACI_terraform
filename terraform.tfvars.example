@@ -1,0 +1,6 @@
+aci_url      = "https://apic.example.com"
+aci_username = "terraform"
+aci_insecure = true
+
+# Do not place aci_password here. Supply credentials with environment variables:
+# export TF_VAR_aci_password='replace-me'
